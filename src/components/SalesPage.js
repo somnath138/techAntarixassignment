@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 const SalesPage = ({ productList, setProductList, count, setCount }) => {
-  const [error, setError] = useState("");
   const [sellqty, setSellqty] = useState();
   console.log(productList);
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,8 +28,6 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
       const decreasecounter = count - 1;
       setCount(decreasecounter);
       localStorage.setItem("count", JSON.stringify(decreasecounter));
-    } else {
-      setError("No more products EXist....");
     }
 
     setProductList(updatedNewProductList);
@@ -107,11 +104,6 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
             </div>
           ))}
         </div>
-      )}
-      {error && (
-        <p className=" flex justify-center items-center text-red-500 text-3xl font-bold">
-          {error}
-        </p>
       )}
     </div>
   );
