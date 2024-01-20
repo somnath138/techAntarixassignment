@@ -100,7 +100,7 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
               <button
                 type="button"
                 onClick={() => handleSellProduct(index)}
-                className="  ml-6 py-2  px-4 mt-3 font-poppins font-medium text-[15px] text-primary outline-none rounded-[10px] bg-gray-300  hover:bg-[#00800cdb] sm:relative sm: bottom-[3.1rem] w-[6rem] sm:left-[8.7rem] h-[2.6rem] md:bottom-0 md:left-0 lg:bottom-0 lg:left-0 xl:bottom-[3.1rem] xl:left-[8.7rem]"
+                className="  ml-6 py-2  px-4 mt-3 font-poppins font-medium text-[15px] text-primary outline-none rounded-[10px] bg-gray-300  hover:bg-[#00800cdb] sm:relative sm: bottom-[3.1rem] w-[6rem] sm:left-[8.7rem] h-[2.6rem] md:bottom-0 md:left-0 lg:bottom-0 lg:left-0 "
               >
                 Sell
               </button>
