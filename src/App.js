@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
+// import logo from './logo.svg';
+// import './App.css';
+import { useState } from "react";
+import AddProductForm from "./components/AddProductForm"
+import Home from "./components/Home";
+import NavigationBar from "./components/NavigationBar";
+import SalesPage from "./components/SalesPage";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
+  const[count,setCount]=useState(0)
+  const [productList,setProductList]=useState([]);
+  const [countproductqty,setProductQty]=useState()
+  const handleProductAdd=(newProduct)=>{
+    setProductList((prevList)=>[...prevList,newProduct])
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <NavigationBar/>
+        <Routes>
+           <Route path="/" element={<Home/>}/>
+            <Route path="/AddProductForm" element={<AddProductForm onAddproduct={handleProductAdd} setCount={setCount} count={count} setProductQty={setProductQty}/>}/>
+            <Route path="/SalesPage" element={<SalesPage productList={productList} setProductList={setProductList} count={count} setCount={setCount} countproductqty={countproductqty}/>}/>
+        </Routes>
+    </Router>
   );
 }
 
