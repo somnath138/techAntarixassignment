@@ -20,19 +20,27 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
   };
   const handleSellProduct = (productId) => {
     //get the particular index
-    let updatedNewProductList = [...productList];
-    //updated the partucular product quantity
-    updatedNewProductList[productId].quantity -= sellqty;
-    if (updatedNewProductList[productId].quantity <= 0) {
-      updatedNewProductList.splice(productId, 1);
-      const decreasecounter = count - 1;
-      setCount(decreasecounter);
-      localStorage.setItem("count", JSON.stringify(decreasecounter));
+    try {
+      if (!sellqty) {
+        throw new Error("please fill product quantity");
+      } else {
+        let updatedNewProductList = [...productList];
+        //updated the partucular product quantity
+        updatedNewProductList[productId].quantity -= sellqty;
+        if (updatedNewProductList[productId].quantity <= 0) {
+          updatedNewProductList.splice(productId, 1);
+          const decreasecounter = count - 1;
+          setCount(decreasecounter);
+          localStorage.setItem("count", JSON.stringify(decreasecounter));
+        }
+
+        setProductList(updatedNewProductList);
+
+        localStorage.setItem("products", JSON.stringify(updatedNewProductList));
+      }
+    } catch (error) {
+      console.error("Error selling product:", error);
     }
-
-    setProductList(updatedNewProductList);
-
-    localStorage.setItem("products", JSON.stringify(updatedNewProductList));
   };
 
   const filteredProducts = productList.filter((product) =>

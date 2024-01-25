@@ -29,7 +29,7 @@ const AddProductForm = ({ onAddproduct, setCount, count, setProductQty }) => {
     return true;
   };
 
-  const handleAddProduct = () => {
+  const handleAddProduct = async () => {
     console.log(" added products are", product);
     //after adding restart input fields
     if (isFormValid()) {
@@ -44,6 +44,26 @@ const AddProductForm = ({ onAddproduct, setCount, count, setProductQty }) => {
       localStorage.setItem("products", JSON.stringify(updatedProducts));
       // Update the count in local storage
       localStorage.setItem("count", parseInt(updateCount));
+
+      try {
+        const response = await fetch(
+          "https://crudcrud.com/api/3c2fa774b8d64b3a93e7d7e48731be41/unicorns",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(product),
+          }
+        );
+        if (response.ok) {
+          console.log("product added successfully in the api");
+        } else {
+          console.log("faild to sproduct added successfully in the api");
+        }
+      } catch (error) {
+        console.log("error making post request", error);
+      }
 
       onAddproduct(product);
       setProduct({
