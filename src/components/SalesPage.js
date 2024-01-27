@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
-
+//response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
 const SalesPage = ({ productList, setProductList, count, setCount }) => {
   const [sellqty, setSellqty] = useState();
   console.log(productList);
   const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState("");
   useEffect(() => {
     //data shhow in the object format
-    const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-    setProductList(storedProducts);
-    const storedCount = JSON.parse(localStorage.getItem("count")) || [];
-    setCount(storedCount);
+    fetch("https://crudcrud.com/api/77fe2965086849b6821b2e150c91ef47/unicorns")
+      .then((Response) => Response.json()) //when page render data fetch and converti it in to json data
+      .then((data) => {
+        setProductList(data);
+        setCount(data.length);
+      });
+
+    //this code use for local storage
+    // const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
+    // setProductList(storedProducts);
+    // const storedCount = JSON.parse(localStorage.getItem("count")) || [];
+    // setCount(storedCount);
   }, [setProductList, setCount]);
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -17,11 +26,13 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
 
   const handleInputChange = (e) => {
     setSellqty(e.target.value);
+    setError("");
   };
-  const handleSellProduct = (productId) => {
+  const handleSellProduct = async (productId) => {
     //get the particular index
     try {
       if (!sellqty) {
+        setError("please set this product quantity....");
         throw new Error("please fill product quantity");
       } else {
         let updatedNewProductList = [...productList];
@@ -31,12 +42,36 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
           updatedNewProductList.splice(productId, 1);
           const decreasecounter = count - 1;
           setCount(decreasecounter);
-          localStorage.setItem("count", JSON.stringify(decreasecounter));
+
+          //this code use for localstorage
+          //localStorage.setItem("count", JSON.stringify(decreasecounter));
         }
 
         setProductList(updatedNewProductList);
+        console.log(productId);
 
-        localStorage.setItem("products", JSON.stringify(updatedNewProductList));
+        //this code used for local storage
+        //localStorage.setItem("products", JSON.stringify(updatedNewProductList));
+        const currentProductId = updatedNewProductList[productId]._id;
+        console.log(currentProductId);
+        const apiURL =
+          "https://crudcrud.com/api/77fe2965086849b6821b2e150c91ef47/unicorns";
+        console.log(`${apiURL}/${currentProductId}`);
+        console.log(updatedNewProductList[productId]);
+
+        await fetch(`${apiURL}/${currentProductId}`, {
+          // mode: "no-cors",
+          method: "PUT",
+          headers: {
+            // "Access-Control-Allow-Headers":
+            //   "Content-Type, Accept, Access-Control-Allow-Origin, Access-Control-Allow-Methods",
+            // "Access-Control-Allow-Origin": "*",
+            // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedNewProductList[productId]),
+        });
+        setSellqty("");
       }
     } catch (error) {
       console.error("Error selling product:", error);
@@ -101,7 +136,7 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
                   className="w-16 h-8 ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </label>
-              <button className=" ml py mt-3 px"></button>
+
               <button
                 type="button"
                 onClick={() => handleSellProduct(index)}
@@ -112,6 +147,11 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
             </div>
           ))}
         </div>
+      )}
+      {error && (
+        <p className=" flex justify-center items-center text-red-500 text-3xl font-bold">
+          {error}
+        </p>
       )}
     </div>
   );

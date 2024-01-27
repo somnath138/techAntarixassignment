@@ -47,7 +47,7 @@ const AddProductForm = ({ onAddproduct, setCount, count, setProductQty }) => {
 
       try {
         const response = await fetch(
-          "https://crudcrud.com/api/3c2fa774b8d64b3a93e7d7e48731be41/unicorns",
+          "https://crudcrud.com/api/77fe2965086849b6821b2e150c91ef47/unicorns",
           {
             method: "POST",
             headers: {
