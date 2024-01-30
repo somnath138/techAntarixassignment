@@ -7,7 +7,7 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
   const [error, setError] = useState("");
   useEffect(() => {
     //data shhow in the object format
-    fetch("https://crudcrud.com/api/77fe2965086849b6821b2e150c91ef47/unicorns")
+    fetch("https://crudcrud.com/api/93f82d2c602b4c33972628c4381722e3/unicorns")
       .then((Response) => Response.json()) //when page render data fetch and converti it in to json data
       .then((data) => {
         setProductList(data);
@@ -52,21 +52,17 @@ const SalesPage = ({ productList, setProductList, count, setCount }) => {
 
         //this code used for local storage
         //localStorage.setItem("products", JSON.stringify(updatedNewProductList));
-        const currentProductId = updatedNewProductList[productId]._id;
+        const currentProductId = updatedNewProductList[productId]._id; //id dstractureing
         console.log(currentProductId);
         const apiURL =
-          "https://crudcrud.com/api/77fe2965086849b6821b2e150c91ef47/unicorns";
+          "https://crudcrud.com/api/93f82d2c602b4c33972628c4381722e3/unicorns";
         console.log(`${apiURL}/${currentProductId}`);
         console.log(updatedNewProductList[productId]);
 
         await fetch(`${apiURL}/${currentProductId}`, {
-          // mode: "no-cors",
-          method: "PUT",
+          mode: "no-cors",
+          method: "POST",
           headers: {
-            // "Access-Control-Allow-Headers":
-            //   "Content-Type, Accept, Access-Control-Allow-Origin, Access-Control-Allow-Methods",
-            // "Access-Control-Allow-Origin": "*",
-            // "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedNewProductList[productId]),
